@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portão Automático - Escola Modelo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <header>
+        <div class="logo">
+            <span class="gate-icon-header">🚪</span>
+            ESCOLA MODELO
+        </div>
+        <h1>PORTÃO AUTOMÁTICO</h1>
+        <div class="status-bar">
+            <div class="live-clock" id="clock">00:00:00</div>
+            <div class="arduino-info">Arduino + RTC DS3231</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard">
+            
+            <!-- Status do Portão -->
+            <div class="card gate-status" id="gate-card">
+                <h2>Status Atual do Portão</h2>
+                <div class="gate-icon" id="gate-icon">🔒</div>
+                <div class="status-text" id="status-text">FECHADO</div>
+                <p id="next-action" class="next-action">Próxima ação: --:--</p>
+                
+                <button class="btn" onclick="toggleManual()">
+                    🔧 Acionamento Manual (Admin)
+                </button>
+            </div>
+
+            <!-- Cronograma -->
+            <div class="card schedule-card">
+                <h2>📅 Cronograma Automático de Horários</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Período</th>
+                            <th>Abre</th>
+                            <th>Fecha</th>
+                            <th>Duração</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Manhã - Entrada</td>
+                            <td><strong>06:40</strong></td>
+                            <td>07:30</td>
+                            <td>50 min</td>
+                        </tr>
+                        <tr>
+                            <td>Intervalo Almoço</td>
+                            <td><strong>11:30</strong></td>
+                            <td>12:00</td>
+                            <td>30 min</td>
+                        </tr>
+                        <tr>
+                            <td>Tarde - Retorno</td>
+                            <td><strong>12:40</strong></td>
+                            <td>13:30</td>
+                            <td>50 min</td>
+                        </tr>
+                        <tr>
+                            <td>Saída Final</td>
+                            <td><strong>17:15</strong></td>
+                            <td>18:00</td>
+                            <td>45 min</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="note">
+                    Sistema totalmente automático.<br>
+                    O portão abre e fecha sozinho nos horários acima.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Sistema de Portão Automático • Controlado por Arduino Uno + RTC DS3231</p>
+        <p>Escola Modelo • Curitiba - PR • 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
