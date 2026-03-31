@@ -1,1 +1,161 @@
+/* ====================== style.css ====================== */
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a2f0a, #1a4d1a, #0f3d0f);
+    color: #e0ffe0;
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+header {
+    background: rgba(0, 25, 0, 0.9);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 6px solid #00cc00;
+    box-shadow: 0 5px 20px rgba(0, 255, 0, 0.25);
+}
+
+.logo {
+    font-size: 1.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #00ff88;
+}
+
+.gate-icon-header {
+    font-size: 2.6rem;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #00ff99;
+    text-align: center;
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.live-clock {
+    background: #001a00;
+    color: #00ff44;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+    border: 3px solid #00cc00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+
+.arduino-info {
+    background: #003300;
+    color: #88ffaa;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 1rem;
+    border: 1px solid #00aa00;
+}
+
+main {
+    max-width: 1180px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1.7fr;
+    gap: 30px;
+}
+
+.card {
+    background: rgba(15, 45, 15, 0.8);
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #00aa33;
+    backdrop-filter: blur(10px);
+}
+
+.gate-status {
+    text-align: center;
+}
+
+.gate-icon {
+    font-size: 9rem;
+    margin: 25px 0;
+    transition: all 0.5s ease;
+}
+
+.open .gate-icon {
+    color: #00ff55;
+    animation: pulse 2s infinite;
+}
+
+.closed .gate-icon {
+    color: #ff5555;
+}
+
+.status-text {
+    font-size: 2.6rem;
+    font-weight: bold;
+    margin: 10px 0 20px;
+    letter-spacing: 3px;
+}
+
+.open .status-text  { color: #00ff55; }
+.closed .status-text { color: #ff6666; }
+
+.next-action {
+    font-size: 1.25rem;
+    color: #bbffbb;
+    margin-bottom: 25px;
+}
+
+.btn {
+    padding: 15px 35px;
+    background: linear-gradient(to bottom, #00dd00, #009900);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(0, 220, 0, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 255, 0, 0.6);
+}
+
+.schedule-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+th, td {
+    padding: 18px 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 255, 80, 0.25);
+}
+
+th {
+    background: rgba
