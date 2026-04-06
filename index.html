@@ -3,93 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portão Automático • Colégio São Cristóvão</title>
+    <meta name="description" content="Sistema de Portão Automático Inteligente da Escola Modelo - Controle preciso via Arduino e RTC DS3231">
+    <meta name="author" content="Escola Modelo">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Portão Automático - Escola Modelo">
+    <meta property="og:description" content="Sistema inteligente de controle automático de portão escolar">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/0a2f0a/00ff88?text=Portao+Escola">
+    <meta property="og:url" content="https://escolamodelo.edu.br/portao">
+
+    <title>Portão Automático | Escola Modelo</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="https://img.icons8.com/fluency/96/door.png" type="image/png">
+
+    <!-- Preload para performance -->
+    <link rel="preload" href="style.css" as="style">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <span class="gate-icon-header">🚪</span>
-            São Cristóvão
-        </div>
-        <h1>PORTÃO AUTOMÁTICO</h1>
-        <div class="status-bar">
-            <div class="live-clock" id="clock">00:00:00</div>
-            <div class="arduino-info">
-                <span>Arduino Uno + RTC DS3231</span>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🚪</span>
+                <div>
+                    <span class="school-name">ESCOLA MODELO</span>
+                    <span class="system-name">Portão Automático</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="live-clock" id="clock">00:00:00</div>
+                <div class="arduino-badge">
+                    <span class="dot"></span>
+                    Arduino + RTC DS3231
+                </div>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="dashboard">
-            
-            <!-- Status do Portão -->
-            <div class="card gate-status" id="gate-card">
-                <h2>Status Atual do Portão</h2>
-                <div class="gate-icon" id="gate-icon">🔒</div>
-                <div class="status-text" id="status-text">FECHADO</div>
-                <p id="next-action" class="next-action">Próxima ação: --:--</p>
-                
-                <button class="btn manual-btn" onclick="toggleManual()">
-                    🔧 Acionamento Manual (Admin)
-                </button>
-            </div>
+        <section class="hero">
+            <div class="container">
+                <div class="dashboard-grid">
+                    
+                    <!-- Card de Status -->
+                    <div class="card status-card glass" id="gate-card">
+                        <div class="card-header">
+                            <h2>Status do Portão</h2>
+                        </div>
+                        <div class="gate-visual" id="gate-visual">
+                            <div class="gate-icon" id="gate-icon">🔒</div>
+                        </div>
+                        <div class="status-info">
+                            <div class="status-text" id="status-text">FECHADO</div>
+                            <div class="next-action" id="next-action">Abre em: --:--</div>
+                        </div>
+                        <button class="btn-primary" onclick="toggleManual()">
+                            <span>🔧</span> Acionamento Manual (Admin)
+                        </button>
+                    </div>
 
-            <!-- Cronograma -->
-            <div class="card schedule-card">
-                <h2>📅 Cronograma Automático</h2>
-                <table id="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Período</th>
-                            <th>Abre</th>
-                            <th>Fecha</th>
-                            <th>Duração</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Manhã - Entrada</td>
-                            <td><strong>06:40</strong></td>
-                            <td>07:30</td>
-                            <td>50 min</td>
-                        </tr>
-                        <tr>
-                            <td>Intervalo Almoço</td>
-                            <td><strong>11:30</strong></td>
-                            <td>12:00</td>
-                            <td>30 min</td>
-                        </tr>
-                        <tr>
-                            <td>Tarde - Retorno</td>
-                            <td><strong>12:40</strong></td>
-                            <td>13:30</td>
-                            <td>50 min</td>
-                        </tr>
-                        <tr>
-                            <td>Saída Final</td>
-                            <td><strong>17:15</strong></td>
-                            <td>18:05</td>
-                            <td>50 min</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p class="note">
-                    Sistema totalmente automático com base no RTC DS3231.<br>
-                    O portão abre e fecha sozinho conforme o cronograma.
-                </p>
-            </div>
+                    <!-- Card do Cronograma -->
+                    <div class="card schedule-card glass">
+                        <div class="card-header">
+                            <h2>📅 Cronograma Automático</h2>
+                        </div>
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Período</th>
+                                    <th>Abre</th>
+                                    <th>Fecha</th>
+                                    <th>Duração</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Manhã - Entrada</td>
+                                    <td class="time-open">06:40</td>
+                                    <td>07:30</td>
+                                    <td>50 min</td>
+                                </tr>
+                                <tr>
+                                    <td>Intervalo Almoço</td>
+                                    <td class="time-open">11:30</td>
+                                    <td>12:00</td>
+                                    <td>30 min</td>
+                                </tr>
+                                <tr>
+                                    <td>Tarde - Retorno</td>
+                                    <td class="time-open">12:40</td>
+                                    <td>13:30</td>
+                                    <td>50 min</td>
+                                </tr>
+                                <tr>
+                                    <td>Saída Final</td>
+                                    <td class="time-open">17:15</td>
+                                    <td>18:00</td>
+                                    <td>45 min</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="system-info">
+                            Sistema 100% automático • Controlado por Arduino Uno + Módulo RTC DS3231
+                        </p>
+                    </div>
 
-        </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer>
-        <p>Sistema de Portão Automático • Arduino Uno + RTC DS3231</p>
-        <p>Colégio Estadual São Cristóvão E.F.M.P • Capanema - PR • 2026</p>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Escola Modelo • Curitiba - PR</p>
+            <p>Sistema de Portão Automático Inteligente desenvolvido com tecnologia Arduino</p>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Script com defer para melhor performance -->
+    <script src="script.js" defer></script>
 </body>
 </html>
