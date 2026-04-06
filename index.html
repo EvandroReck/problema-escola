@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portão Automático - Escola Modelo</title>
+    <title>Portão Automático • Colégio São Cristóvão</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://img.icons8.com/fluency/96/door.png" type="image/png">
 </head>
 <body>
-
     <header>
         <div class="logo">
             <span class="gate-icon-header">🚪</span>
@@ -16,7 +16,9 @@
         <h1>PORTÃO AUTOMÁTICO</h1>
         <div class="status-bar">
             <div class="live-clock" id="clock">00:00:00</div>
-            <div class="arduino-info">Arduino + RTC DS3231</div>
+            <div class="arduino-info">
+                <span>Arduino Uno + RTC DS3231</span>
+            </div>
         </div>
     </header>
 
@@ -30,15 +32,15 @@
                 <div class="status-text" id="status-text">FECHADO</div>
                 <p id="next-action" class="next-action">Próxima ação: --:--</p>
                 
-                <button class="btn" onclick="toggleManual()">
+                <button class="btn manual-btn" onclick="toggleManual()">
                     🔧 Acionamento Manual (Admin)
                 </button>
             </div>
 
             <!-- Cronograma -->
             <div class="card schedule-card">
-                <h2>📅 Cronograma Automático de Horários</h2>
-                <table>
+                <h2>📅 Cronograma Automático</h2>
+                <table id="schedule-table">
                     <thead>
                         <tr>
                             <th>Período</th>
@@ -75,8 +77,8 @@
                     </tbody>
                 </table>
                 <p class="note">
-                    Sistema totalmente automático.<br>
-                    O portão abre e fecha sozinho nos horários acima.
+                    Sistema totalmente automático com base no RTC DS3231.<br>
+                    O portão abre e fecha sozinho conforme o cronograma.
                 </p>
             </div>
 
@@ -84,7 +86,7 @@
     </main>
 
     <footer>
-        <p>Sistema de Portão Automático • Controlado por Arduino Uno + RTC DS3231</p>
+        <p>Sistema de Portão Automático • Arduino Uno + RTC DS3231</p>
         <p>Colégio Estadual São Cristóvão E.F.M.P • Capanema - PR • 2026</p>
     </footer>
 
