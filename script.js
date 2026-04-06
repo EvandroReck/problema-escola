@@ -1,118 +1,100 @@
-// =============================================
-//  SISTEMA DE PORTÃO AUTOMÁTICO - Escola São Cristóvão
-//  Arduino Uno + RTC DS3231
-// =============================================
+// script.js - Portão Automático (Versão Premium)
 
 const schedule = [
-    { open:  6*60 + 40, close:  7*60 + 30 }, // Manhã - Entrada
-    { open: 11*60 + 30, close: 12*60 +  0 }, // Intervalo Almoço
-    { open: 12*60 + 40, close: 13*60 + 30 }, // Tarde - Retorno
-    { open: 17*60 + 15, close: 18*60 +  5 }  // Saída Final (corrigido)
+    { open: 6*60 + 40,  close: 7*60 + 30 },   // 06:40 - 07:30
+    { open: 11*60 + 30, close: 12*60 + 0 },   // 11:30 - 12:00
+    { open: 12*60 + 40, close: 13*60 + 30 },  // 12:40 - 13:30
+    { open: 17*60 + 15, close: 18*60 + 0 }    // 17:15 - 18:00
 ];
 
-// Atualiza relógio e status a cada segundo
-function updateClock() {
-    const now = new Date();
-    
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    
-    document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-    
-    updateGateStatus(now);
+function minutesSinceMidnight(date) {
+    return date.getHours() * 60 + date.getMinutes();
 }
 
-// Verifica se o portão deve estar aberto
-function isGateOpen(currentMinutes) {
-    for (let slot of schedule) {
-        if (currentMinutes >= slot.open && currentMinutes < slot.close) {
-            return true;
-        }
-    }
-    return false;
+function isGateOpen(now) {
+    const current = minutesSinceMidnight(now);
+    return schedule.some(slot => current >= slot.open && current < slot.close);
 }
 
-// Retorna a próxima ação (abrir ou fechar)
 function getNextAction(now) {
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const current = minutesSinceMidnight(now);
     let nextTime = null;
-    let isOpening = false;
+    let isOpening = true;
 
     for (let slot of schedule) {
-        if (currentMinutes < slot.open) {
+        if (current < slot.open) {
             nextTime = slot.open;
             isOpening = true;
             break;
         }
-        if (currentMinutes < slot.close) {
+        if (current < slot.close) {
             nextTime = slot.close;
             isOpening = false;
             break;
         }
     }
 
-    // Próximo dia
-    if (nextTime === null) {
-        nextTime = 6 * 60 + 40;
-        isOpening = true;
-    }
+    if (nextTime === null) nextTime = 6*60 + 40;
 
     const hour = Math.floor(nextTime / 60).toString().padStart(2, '0');
     const min = (nextTime % 60).toString().padStart(2, '0');
-    
-    return {
-        text: `${isOpening ? "Abre" : "Fecha"} às ${hour}:${min}`,
-        isOpening: isOpening
-    };
+
+    return `${isOpening ? 'Abre' : 'Fecha'} às ${hour}:${min}`;
 }
 
-// Atualiza o visual do status do portão
-function updateGateStatus(now) {
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    const gateCard = document.getElementById('gate-card');
-    const gateIcon = document.getElementById('gate-icon');
+function updateClock() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+    });
+    
+    document.getElementById('clock').textContent = timeStr;
+    updateGateUI(now);
+}
+
+function updateGateUI(now) {
+    const card = document.getElementById('gate-card');
+    const icon = document.getElementById('gate-icon');
     const statusText = document.getElementById('status-text');
-    const nextActionEl = document.getElementById('next-action');
+    const nextEl = document.getElementById('next-action');
 
-    const next = getNextAction(now);
+    const isOpen = isGateOpen(now);
 
-    if (isGateOpen(currentMinutes)) {
-        gateCard.classList.add('open');
-        gateCard.classList.remove('closed');
-        gateIcon.textContent = '🚪';
+    if (isOpen) {
+        card.classList.add('open');
+        card.classList.remove('closed');
+        icon.textContent = '🚪';
         statusText.textContent = 'ABERTO';
-        nextActionEl.innerHTML = `Fecha em: <strong>${next.text.replace('Fecha às ', '')}</strong>`;
+        nextEl.innerHTML = `Fecha em: <strong>${getNextAction(now).replace('Fecha às', '')}</strong>`;
     } else {
-        gateCard.classList.add('closed');
-        gateCard.classList.remove('open');
-        gateIcon.textContent = '🔒';
+        card.classList.add('closed');
+        card.classList.remove('open');
+        icon.textContent = '🔒';
         statusText.textContent = 'FECHADO';
-        nextActionEl.innerHTML = `Abre em: <strong>${next.text.replace('Abre às ', '')}</strong>`;
+        nextEl.innerHTML = `Abre em: <strong>${getNextAction(now).replace('Abre às', '')}</strong>`;
     }
 }
 
-// Acionamento manual
 function toggleManual() {
-    if (confirm("⚠️ Deseja acionar o portão manualmente?\n\nIsso simula o envio de comando ao Arduino.")) {
-        alert("✅ Comando enviado com sucesso ao Arduino!\nO portão foi acionado manualmente.");
-
-        const gateIcon = document.getElementById('gate-icon');
-        const original = gateIcon.textContent;
+    if (confirm("Enviar comando manual ao Arduino?")) {
+        const icon = document.getElementById('gate-icon');
+        const original = icon.textContent;
         
-        gateIcon.style.transition = 'all 0.2s';
-        gateIcon.textContent = '⚡';
+        icon.style.transition = 'transform 0.2s';
+        icon.style.transform = 'scale(1.3) rotate(20deg)';
         
         setTimeout(() => {
-            gateIcon.textContent = original;
-        }, 700);
+            alert("✅ Comando enviado com sucesso ao Arduino!");
+            icon.style.transform = 'scale(1) rotate(0deg)';
+            setTimeout(() => icon.textContent = original, 400);
+        }, 300);
     }
 }
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 1000);
-    updateClock(); // Execução imediata
-    
-    console.log("%c✅ Sistema de Portão Automático carregado com sucesso!", "color: #00ff88; font-weight: bold;");
+    updateClock(); // Primeira execução
 });
