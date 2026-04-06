@@ -1,27 +1,29 @@
-// script.js - Controle do Portão Automático
+// =============================================
+//  SISTEMA DE PORTÃO AUTOMÁTICO - Escola São Cristóvão
+//  Arduino Uno + RTC DS3231
+// =============================================
 
-// Atualiza o relógio em tempo real
+const schedule = [
+    { open:  6*60 + 40, close:  7*60 + 30 }, // Manhã - Entrada
+    { open: 11*60 + 30, close: 12*60 +  0 }, // Intervalo Almoço
+    { open: 12*60 + 40, close: 13*60 + 30 }, // Tarde - Retorno
+    { open: 17*60 + 15, close: 18*60 +  5 }  // Saída Final (corrigido)
+];
+
+// Atualiza relógio e status a cada segundo
 function updateClock() {
     const now = new Date();
-    let hours = now.getHours().toString().padStart(2, '0');
-    let minutes = now.getMinutes().toString().padStart(2, '0');
-    let seconds = now.getSeconds().toString().padStart(2, '0');
+    
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
     
     document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-
-    // Atualiza o status do portão
+    
     updateGateStatus(now);
 }
 
-// Horários do cronograma (em minutos desde meia-noite)
-const schedule = [
-    { open: 6*60 + 40,  close: 7*60 + 30 },   // 06:40 - 07:30
-    { open: 11*60 + 30, close: 12*60 + 0 },   // 11:30 - 12:00
-    { open: 12*60 + 40, close: 13*60 + 30 },  // 12:40 - 13:30
-    { open: 17*60 + 15, close: 18*60 + 0 }    // 17:15 - 18:00
-];
-
-// Verifica se o portão deve estar aberto no momento atual
+// Verifica se o portão deve estar aberto
 function isGateOpen(currentMinutes) {
     for (let slot of schedule) {
         if (currentMinutes >= slot.open && currentMinutes < slot.close) {
@@ -31,7 +33,7 @@ function isGateOpen(currentMinutes) {
     return false;
 }
 
-// Retorna o próximo horário de ação (abrir ou fechar)
+// Retorna a próxima ação (abrir ou fechar)
 function getNextAction(now) {
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
     let nextTime = null;
@@ -50,20 +52,22 @@ function getNextAction(now) {
         }
     }
 
-    // Se já passou do último horário, próximo é amanhã às 06:40
+    // Próximo dia
     if (nextTime === null) {
-        nextTime = 6*60 + 40;
+        nextTime = 6 * 60 + 40;
         isOpening = true;
     }
 
-    const nextHour = Math.floor(nextTime / 60);
-    const nextMin = nextTime % 60;
-    const actionText = isOpening ? "Abre" : "Fecha";
-
-    return `${actionText} às ${nextHour.toString().padStart(2, '0')}:${nextMin.toString().padStart(2, '0')}`;
+    const hour = Math.floor(nextTime / 60).toString().padStart(2, '0');
+    const min = (nextTime % 60).toString().padStart(2, '0');
+    
+    return {
+        text: `${isOpening ? "Abre" : "Fecha"} às ${hour}:${min}`,
+        isOpening: isOpening
+    };
 }
 
-// Atualiza visual do status do portão
+// Atualiza o visual do status do portão
 function updateGateStatus(now) {
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
     const gateCard = document.getElementById('gate-card');
@@ -71,48 +75,44 @@ function updateGateStatus(now) {
     const statusText = document.getElementById('status-text');
     const nextActionEl = document.getElementById('next-action');
 
+    const next = getNextAction(now);
+
     if (isGateOpen(currentMinutes)) {
-        // Portão Aberto
         gateCard.classList.add('open');
         gateCard.classList.remove('closed');
         gateIcon.textContent = '🚪';
         statusText.textContent = 'ABERTO';
-        nextActionEl.innerHTML = `Fecha em: <strong>${getNextAction(now).replace('Abre às', '').replace('Fecha às', '')}</strong>`;
+        nextActionEl.innerHTML = `Fecha em: <strong>${next.text.replace('Fecha às ', '')}</strong>`;
     } else {
-        // Portão Fechado
         gateCard.classList.add('closed');
         gateCard.classList.remove('open');
         gateIcon.textContent = '🔒';
         statusText.textContent = 'FECHADO';
-        nextActionEl.innerHTML = `Abre em: <strong>${getNextAction(now).replace('Abre às', '').replace('Fecha às', '')}</strong>`;
+        nextActionEl.innerHTML = `Abre em: <strong>${next.text.replace('Abre às ', '')}</strong>`;
     }
 }
 
-// Função do botão de acionamento manual
+// Acionamento manual
 function toggleManual() {
-    const confirmAction = confirm("Deseja acionar o portão manualmente?\n\nIsso simula o comando enviado ao Arduino.");
-    
-    if (confirmAction) {
-        alert("✅ Comando enviado ao Arduino!\n\nO portão foi acionado manualmente.");
-        
-        // Feedback visual temporário
+    if (confirm("⚠️ Deseja acionar o portão manualmente?\n\nIsso simula o envio de comando ao Arduino.")) {
+        alert("✅ Comando enviado com sucesso ao Arduino!\nO portão foi acionado manualmente.");
+
         const gateIcon = document.getElementById('gate-icon');
-        const originalIcon = gateIcon.textContent;
+        const original = gateIcon.textContent;
         
+        gateIcon.style.transition = 'all 0.2s';
         gateIcon.textContent = '⚡';
+        
         setTimeout(() => {
-            gateIcon.textContent = originalIcon;
-        }, 800);
+            gateIcon.textContent = original;
+        }, 700);
     }
 }
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    // Atualiza o relógio e status a cada segundo
     setInterval(updateClock, 1000);
+    updateClock(); // Execução imediata
     
-    // Primeira execução imediata
-    updateClock();
-    
-    console.log("✅ Sistema de Portão Automático carregado com sucesso!");
+    console.log("%c✅ Sistema de Portão Automático carregado com sucesso!", "color: #00ff88; font-weight: bold;");
 });
