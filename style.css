@@ -1,136 +1,162 @@
+/* ====================== style.css ====================== */
+
+:root {
+    --primary: #00ff88;
+    --primary-dark: #00cc66;
+    --danger: #ff5555;
+    --bg: #0a1f0f;
+    --card-bg: rgba(15, 35, 20, 0.75);
+    --text: #e0ffe0;
+    --text-light: #bbffcc;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --primary: #00ff88;
-    --success: #00cc66;
-    --danger: #ff5555;
-    --dark: #0a2f0a;
-    --card-bg: rgba(15, 45, 15, 0.92);
-}
-
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(135deg, #0a2f0a 0%, #1a4d1a 50%, #0f3d0f 100%);
-    color: #e0ffe0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0a1f0f 0%, #0f2a1a 50%, #0a1f0f 100%);
+    color: var(--text);
     min-height: 100vh;
     background-attachment: fixed;
-    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-header {
-    background: rgba(0, 25, 0, 0.96);
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-    border-bottom: 7px solid var(--primary);
-    box-shadow: 0 8px 30px rgba(0, 255, 80, 0.25);
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+.header {
+    background: rgba(10, 31, 15, 0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.25);
     position: sticky;
     top: 0;
     z-index: 100;
+    padding: 18px 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
-    font-size: 2rem;
-    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 14px;
-    color: var(--primary);
+    font-weight: 700;
 }
 
-.gate-icon-header {
+.logo-icon {
     font-size: 2.8rem;
 }
 
-h1 {
-    font-size: 2.2rem;
-    color: #00ff99;
-    font-weight: 600;
-    text-align: center;
-    flex: 1;
-    letter-spacing: 2px;
+.school-name {
+    font-size: 1.35rem;
+    letter-spacing: 1px;
 }
 
-.status-bar {
+.system-name {
+    font-size: 0.95rem;
+    color: var(--primary);
+    opacity: 0.9;
+}
+
+.header-right {
     display: flex;
     align-items: center;
     gap: 16px;
-    flex-wrap: wrap;
 }
 
 .live-clock {
-    background: #001a00;
-    color: #00ff55;
-    padding: 14px 28px;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--primary);
+    padding: 12px 28px;
     border-radius: 50px;
     font-family: 'Courier New', monospace;
-    font-size: 1.65rem;
+    font-size: 1.55rem;
     font-weight: 700;
-    letter-spacing: 5px;
-    border: 4px solid #00cc44;
-    box-shadow: 0 0 20px rgba(0, 255, 70, 0.5);
-    min-width: 180px;
-    text-align: center;
+    letter-spacing: 4px;
+    border: 2px solid rgba(0, 255, 136, 0.4);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
 }
 
-.arduino-info {
-    background: #003300;
-    color: #99ffbb;
-    padding: 10px 20px;
+.arduino-badge {
+    background: rgba(0, 80, 40, 0.7);
+    padding: 8px 18px;
     border-radius: 30px;
-    font-size: 0.98rem;
-    border: 2px solid #00aa44;
-    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-main {
-    max-width: 1220px;
-    margin: 50px auto;
-    padding: 0 20px;
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #00ff88;
+    animation: pulse-dot 2s infinite;
 }
 
-.dashboard {
+/* Dashboard */
+.dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr 1.75fr;
-    gap: 35px;
+    grid-template-columns: 1fr 1.65fr;
+    gap: 32px;
+    margin-top: 60px;
 }
 
 .card {
     background: var(--card-bg);
     border-radius: 24px;
-    padding: 38px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
-    border: 2px solid #00aa44;
-    backdrop-filter: blur(12px);
-    transition: transform 0.3s ease;
+    padding: 32px;
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .card:hover {
     transform: translateY(-8px);
+    box-shadow: 0 30px 80px rgba(0, 255, 136, 0.15);
 }
 
-.gate-status {
+.glass {
+    background: rgba(15, 35, 20, 0.65);
+}
+
+/* Status Card */
+.status-card {
     text-align: center;
 }
 
+.gate-visual {
+    margin: 30px 0;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .gate-icon {
-    font-size: 10.5rem;
-    margin: 20px 0 15px;
+    font-size: 9.5rem;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 10px 30px rgba(0, 255, 136, 0.4));
 }
 
 .open .gate-icon {
-    color: #00ff77;
-    animation: pulse-open 2.5s infinite ease-in-out;
-    transform: scale(1.08);
+    color: #00ff88;
+    animation: gate-open 2s infinite ease-in-out;
 }
 
 .closed .gate-icon {
@@ -138,106 +164,103 @@ main {
 }
 
 .status-text {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 10px 0 25px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin: 15px 0;
 }
 
-.open .status-text  { color: #00ff88; text-shadow: 0 0 20px #00ff88; }
-.closed .status-text { color: #ff7777; text-shadow: 0 0 20px #ff5555; }
+.open .status-text { color: #00ff88; }
+.closed .status-text { color: #ff6666; }
 
 .next-action {
-    font-size: 1.35rem;
-    color: #bbffcc;
+    font-size: 1.25rem;
+    color: var(--text-light);
     margin-bottom: 30px;
-    min-height: 28px;
 }
 
-.btn {
-    padding: 16px 40px;
-    background: linear-gradient(145deg, #00ff77, #00aa44);
-    color: white;
+.btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    color: #000;
+    font-weight: 700;
+    font-size: 1.1rem;
     border: none;
     border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: 700;
     cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 25px rgba(0, 255, 100, 0.4);
-    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
 }
 
-.btn:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 15px 35px rgba(0, 255, 120, 0.6);
-    background: linear-gradient(145deg, #00ff99, #00cc55);
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.6);
 }
 
-.schedule-card table {
+/* Schedule Card */
+.schedule-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 30px 0;
-    background: rgba(0, 30, 0, 0.4);
-    border-radius: 12px;
-    overflow: hidden;
+    margin: 25px 0;
 }
 
-th, td {
-    padding: 18px 14px;
+.schedule-table th,
+.schedule-table td {
+    padding: 18px 12px;
     text-align: center;
-    border-bottom: 1px solid rgba(0, 255, 100, 0.2);
 }
 
-th {
-    background: rgba(0, 80, 40, 0.8);
-    color: #00ffaa;
+.schedule-table th {
+    background: rgba(0, 60, 30, 0.6);
+    color: var(--primary);
     font-weight: 600;
-    font-size: 1.1rem;
 }
 
-tbody tr:hover {
-    background: rgba(0, 255, 100, 0.08);
+.schedule-table td {
+    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
 }
 
-.note {
-    color: #aaddbb;
-    font-size: 1.05rem;
-    text-align: center;
+.time-open {
+    color: #00ff88;
+    font-weight: 700;
+}
+
+.system-info {
     margin-top: 20px;
-    font-style: italic;
+    font-size: 1rem;
+    opacity: 0.85;
+    text-align: center;
+}
+
+/* Footer */
+.footer {
+    margin-top: 120px;
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid rgba(0, 255, 136, 0.1);
+    color: #88ccaa;
+    font-size: 0.95rem;
 }
 
 /* Animações */
-@keyframes pulse-open {
-    0%, 100% { transform: scale(1.05); }
-    50% { transform: scale(1.15); }
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
-/* Responsividade */
-@media (max-width: 992px) {
-    .dashboard {
+@keyframes gate-open {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.08) rotate(3deg); }
+}
+
+/* Responsivo */
+@media (max-width: 968px) {
+    .dashboard-grid {
         grid-template-columns: 1fr;
     }
     
-    h1 {
-        font-size: 1.9rem;
-    }
-}
-
-@media (max-width: 600px) {
-    header {
-        flex-direction: column;
-        text-align: center;
-        padding: 18px;
-    }
-    
     .gate-icon {
-        font-size: 8rem;
-    }
-    
-    .status-text {
-        font-size: 2.4rem;
+        font-size: 7.5rem;
     }
 }
